@@ -55,6 +55,7 @@
             >
               {{ action }}
             </button>
+            <button class="link" type="button" @click="syncCheck(row)">增加核查提醒</button>
           </td>
         </tr>
         <tr v-if="!rows.length">
@@ -79,7 +80,11 @@ import {
   moduleMeta,
   runAction as applyAction,
 } from '@/api/local-service'
+import { addCrossModuleReminder } from '@/api/offline-service'
+import { useSessionStore } from '@/stores/session'
 import type { EntryRow } from '@/data/types'
+
+const session = useSessionStore()
 
 const meta = moduleMeta('firereport')
 const columns = ["报告编号", "起火地点", "起火时间", "火势等级", "过火面积", "扑救情况", "报告人", "报告状态"]
@@ -120,6 +125,18 @@ function runAction(action: string, row: EntryRow) {
     return
   }
   reload()
+}
+
+// 别的模块核查提醒同步增加：与巡护接收共用一个核查提醒中心。
+function syncCheck(row: EntryRow) {
+  const refNo = String(row['报告编号'] ?? row.id)
+  const result = addCrossModuleReminder({
+    sourceModule: 'firereport',
+    sourceRef: refNo,
+    forestFarm: session.forestFarm,
+    content: `火情报告 ${refNo} 提请核查起火地点与火势情况`,
+  })
+  errorMessage.value = result.message
 }
 
 function reload() {
