@@ -6,7 +6,8 @@
         <p class="page-desc">维护巡护任务，围绕任务编号、巡护区域、巡护路线、巡护员做登记、筛选与状态流转。</p>
       </div>
       <div class="page-actions">
-        <button class="btn primary" type="button" @click="openCreate">登记巡护任务</button>
+        <RouterLink class="btn primary" to="/patrol-report">离线上报与复核</RouterLink>
+        <button class="btn" type="button" @click="openCreate">登记巡护任务</button>
         <button class="btn" type="button" @click="exportRows">导出巡护任务清单</button>
       </div>
     </header>

@@ -85,3 +85,7 @@ desktop.ini
 *.db
 *.pid
 *.seed
+
+# 巡护离线上报自检的临时打包产物
+scripts/service-bundle.generated.mjs
+scripts/.check-entry.ts
